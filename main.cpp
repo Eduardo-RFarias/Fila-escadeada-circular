@@ -13,49 +13,40 @@ int main()
 {
     CircularLinkedQueue<Process> list;
 
-    list.add({1, 1000});
-    list.add({2, 2000});
-    list.add({3, 3000});
+    int numProcess;
+    cin >> numProcess;
 
-    for (auto node = list.next(); node != nullptr; node = list.next())
+    int quantum;
+    cin >> quantum;
+
+    for (int i = 0; i < numProcess; i++)
     {
-        auto element = node->data;
+        Process process;
 
-        cout << "PID: " << element.id << endl;
-        cout << "Time: " << element.timeLeft << endl;
+        cin >> process.id;
+        cin >> process.timeLeft;
 
-        list.deleteCurrent();
+        process.timeLeft *= 1000;
+
+        list.add(process);
     }
 
-    list.add({4, 4000});
-    list.add({5, 5000});
-    list.add({6, 6000});
+    int time = 0;
 
-    auto p1 = list.next();
-    cout << "PID: " << p1->data.id << endl;
-    cout << "Time: " << p1->data.timeLeft << endl;
+    for (auto node = list.next(); !list.isEmpty(); node = list.next())
+    {
+        Process *process = &node->data;
 
-    auto p2 = list.next();
-    cout << "PID: " << p2->data.id << endl;
-    cout << "Time: " << p2->data.timeLeft << endl;
+        process->timeLeft -= quantum;
+        time += quantum;
 
-    auto p3 = list.next();
-    cout << "PID: " << p3->data.id << endl;
-    cout << "Time: " << p3->data.timeLeft << endl;
-
-    list.deleteCurrent();
-
-    p1 = list.next();
-    cout << "PID: " << p1->data.id << endl;
-    cout << "Time: " << p1->data.timeLeft << endl;
-
-    p1 = list.next();
-    cout << "PID: " << p1->data.id << endl;
-    cout << "Time: " << p1->data.timeLeft << endl;
-
-    p1 = list.next();
-    cout << "PID: " << p1->data.id << endl;
-    cout << "Time: " << p1->data.timeLeft << endl;
+        if (process->timeLeft <= 0)
+        {
+            time += process->timeLeft;
+            cout << process->id << " (" << time << ")" << endl;
+            list.deleteCurrent();
+        }
+    }
 
     return 0;
 }

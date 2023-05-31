@@ -93,6 +93,18 @@ public:
             throw "List is empty or was not iterated yet";
         }
 
+        // If the list has only one element
+        // delete it and set the head and tail to nullptr
+        if (head == tail)
+        {
+            delete head;
+            head = nullptr;
+            tail = nullptr;
+            currentIteration = nullptr;
+
+            return;
+        }
+
         // If the element to delete is the first element of the list
         // set the head to the next element and delete the current element.
         //
@@ -127,6 +139,11 @@ public:
         lastIteration->next = currentIteration->next;
         delete currentIteration;
         currentIteration = lastIteration;
+    }
+
+    bool isEmpty()
+    {
+        return head == nullptr;
     }
 };
 
